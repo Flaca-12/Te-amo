@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi persona favorita</title>
+    <style>
+        :root {
+            --color-principal: #ff4d6d;
+            --color-secundario: #ffccd5;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /* Lluvia de pétalos */
+        .petal {
+            position: absolute;
+            background-color: #ff4d6d;
+            border-radius: 150% 0 150% 0;
+            animation: fall linear infinite;
+            z-index: 0;
+            opacity: 0.7;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Corazón Latiente */
+        .heart-container {
+            z-index: 10;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .heart {
+            width: 80px;
+            height: 80px;
+            background-color: var(--color-principal);
+            transform: rotate(-45deg);
+            animation: beat 0.8s infinite alternate;
+            position: relative;
+            margin-bottom: 50px;
+        }
+
+        .heart::before, .heart::after {
+            content: "";
+            width: 80px;
+            height: 80px;
+            background-color: var(--color-principal);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .heart::before { top: -40px; left: 0; }
+        .heart::after { left: 40px; top: 0; }
+
+        @keyframes beat {
+            to { transform: scale(1.1) rotate(-45deg); }
+        }
+
+        /* Contador y Texto */
+        .info-box {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 10;
+            max-width: 90%;
+        }
+
+        #contador {
+            font-weight: bold;
+            color: #c9184a;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        /* Botón y Carta */
+        .btn-carta {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: var(--color-principal);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 10;
+        }
+
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carta {
+            background: #fff9fa;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+            line-height: 1.6;
+            color: #590d22;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="heart-container">
+        <div class="heart"></div>
+    </div>
+
+    <div class="info-box">
+        <h1>Juntos por siempre ❤️</h1>
+        <div id="contador">Calculando nuestro tiempo...</div>
+        <button class="btn-carta" onclick="mostrarCarta()">Abrir mi mensaje</button>
+    </div>
+
+    <div id="overlay" onclick="cerrarCarta()">
+        <div class="carta">
+            <h3>Mi niña linda:</h3>
+            <p>Desde aquel 12 de septiembre de 2024, mi vida cambió por completo. Eres la razón de mis sonrisas y mi motivación diaria. Gracias por cada momento a mi lado. ¡Te amo muchísimo! ❤️</p>
+            <p style="font-size: 0.8rem; color: #ff4d6d;">(Haz clic fuera para cerrar)</p>
+        </div>
+    </div>
+
+    <script>
+        // Crear pétalos
+        function createPetals() {
+            for (let i = 0; i < 30; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.width = Math.random() * 15 + 10 + 'px';
+                petal.style.height = petal.style.width;
+                petal.style.animationDuration = Math.random() * 3 + 2 + 's';
+                petal.style.delay = Math.random() * 5 + 's';
+                document.body.appendChild(petal);
+            }
+        }
+
+        // Contador de tiempo
+        function actualizarContador() {
+            const fechaInicio = new Date('2024-09-12T00:00:00');
+            const ahora = new Date();
+            const diferencia = ahora - fechaInicio;
+
+            const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+            const minutos = Math.floor((diferencia / 1000 / 60) % 60);
+            const segundos = Math.floor((diferencia / 1000) % 60);
+
+            document.getElementById('contador').innerHTML = 
+                `${dias} días, ${horas}h, ${minutos}m y ${segundos}s`;
+        }
+
+        function mostrarCarta() { document.getElementById('overlay').style.display = 'flex'; }
+        function cerrarCarta() { document.getElementById('overlay').style.display = 'none'; }
+
+        createPetals();
+        setInterval(actualizarContador, 1000);
+        actualizarContador();
+    </script>
+</body>
+</html>
